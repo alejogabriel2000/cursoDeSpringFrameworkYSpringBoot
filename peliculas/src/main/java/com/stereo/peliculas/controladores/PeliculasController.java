@@ -2,6 +2,7 @@ package com.stereo.peliculas.controladores;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,8 +53,8 @@ public class PeliculasController {
 
 	@PostMapping("/pelicula")
 	public String guardar(Pelicula pelicula, @ModelAttribute(name="ids") String ids) {
-		
-		//List<Long> idsProtagonistas = (List<Long>) Arrays.stream(ids.split(","));
+		List<Long> idsProtagonistas = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList());
+		pelicula.setProtagonistas(actorServicio.findAllById(idsProtagonistasgit status));
 		servicio.grabar(pelicula);
 		return "redirect:home";
 	}
