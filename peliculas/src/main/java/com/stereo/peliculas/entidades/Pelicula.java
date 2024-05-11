@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -29,14 +31,17 @@ public class Pelicula implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotEmpty(message ="El nombre no debe ser vacio")
 	private String nombre;
 
 	@Column(name = "fecha_estreno")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "El campo fecha de estreno no deber estar vacio")
 	private Date fechaEstreno;
 	
 	@OneToOne
+	@NotNull
 	private Genero genero;
 	
 	@ManyToMany

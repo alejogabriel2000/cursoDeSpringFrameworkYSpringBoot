@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +54,12 @@ public class PeliculasController {
 	}
 
 	@PostMapping("/pelicula")
-	public String guardar(Pelicula pelicula, @ModelAttribute(name="ids") String ids) {
+	public String guardar(@Valid Pelicula pelicula, BindingResult br, @ModelAttribute(name="ids") String ids, Model model) {
+		if (br.hasErrors()) {
+			model.addAttribute("generos", generoServicio.findAll());
+			model.addAttribute("actores", actorServicio.findAll());
+			return "pelicula";
+		}
 		List<Long> idsProtagonistas = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList());
 		pelicula.setProtagonistas(actorServicio.findAllById(idsProtagonistas));
 		servicio.grabar(pelicula);
