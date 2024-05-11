@@ -54,7 +54,7 @@ public class PeliculasController {
 	@PostMapping("/pelicula")
 	public String guardar(Pelicula pelicula, @ModelAttribute(name="ids") String ids) {
 		List<Long> idsProtagonistas = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList());
-		pelicula.setProtagonistas(actorServicio.findAllById(idsProtagonistasgit status));
+		pelicula.setProtagonistas(actorServicio.findAllById(idsProtagonistas));
 		servicio.grabar(pelicula);
 		return "redirect:home";
 	}
